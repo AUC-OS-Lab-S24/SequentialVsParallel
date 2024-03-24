@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     // open file
