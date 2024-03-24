@@ -59,9 +59,25 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     // and return the result
     int *results = (int *)malloc(n_proc * sizeof(int));
     
-    int forkID = fork();
+    // How should i pipe this?
+    // inside for loop or outside?
 
-    
+    for(int i = 0; i < n_proc; i++){
+        int pid = fork();
+        if(pid == 0){
+            // child process
+            int start = parts[i];
+            int end = (i == (n_proc - 1) )? count : (start + size);
+            int result = numbers[start];
+            for (int j = start + 1; j < end; j++)
+            {
+                result = f(result, numbers[j]);
+            }
+            // pass value to parent using pipe
+
+
+
+        }
 
 
     
