@@ -32,7 +32,7 @@ int sequential_compute(const char *filepath, int (*f)(int, int))
 
 int main()
 {
-    const char *filepath = "numbers.txt";
+    const char *filepath = "Tests/test2.txt";
     int result = sequential_compute(filepath, add);
     printf("Result: %d\n", result);
 }
