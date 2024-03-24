@@ -85,6 +85,9 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
             {
                 result = f(result, numbers[j]);
             }
+            // Debug lines
+            // printf("Process %d: %d\n", i, result);
+            // DEBUG HERE 
             // pass value to parent using pipe
             write(pipes[i][1], &result, sizeof(int));
             // close pipe write end
