@@ -1,3 +1,5 @@
+#ifndef SEQUENTIAL_COMPUTE_H
+#define SEQUENTIAL_COMPUTE_H
 #include <stdio.h>
 #include <stdlib.h>
 //File should contain comma seperated numbers
@@ -27,3 +29,4 @@ int sequential_compute(const char *filepath, int (*f)(int, int))
     return result;
 }
 
+#endif
