@@ -2,10 +2,7 @@
 #include <stdlib.h>
 //File should contain comma seperated numbers
 
-int add(int a, int b)
-{
-    return a + b;
-}
+
 
 int sequential_compute(const char *filepath, int (*f)(int, int))
 {
@@ -30,9 +27,3 @@ int sequential_compute(const char *filepath, int (*f)(int, int))
     return result;
 }
 
-int main()
-{
-    const char *filepath = "Tests/test2.txt";
-    int result = sequential_compute(filepath, add);
-    printf("Result: %d\n", result);
-}
