@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "sequential_compute.h"
+#include "parallel_compute.h"
 int add(int a, int b)
 {
     return a + b;
@@ -54,6 +55,11 @@ int main()
 
 
         int result = sequential_compute(filepath, operation);
-        printf("Result: %d\n", result);
+
+        // result from parallel_compute
+        int parallel_result = parallel_compute(filepath, 4, operation);
+
+        printf("Result from sequential: %d\n", result);
+        printf("Result from parallel: %d\n", parallel_result);
     }
 }

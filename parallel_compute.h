@@ -38,20 +38,16 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
 
     // split numbers into n_proc parts
     // assign a starting index to each process
-    int *parts = (int *)malloc(n_proc * sizeof(int));
+    int *partsIndex = (int *)malloc(n_proc * sizeof(int));
     // size will be equal to count/n_proc, unless count is not divisible by n_proc
 
 
     int size = count / n_proc;
-    int parts = size;
-    // check if count is divisible by n_proc
-    if(count % n_proc != 0){
-        parts++;
-    }
+   
     // assign part index and size
     for (int i = 0; i < n_proc; i++)
     {
-        parts[i] = i * size;
+        partsIndex[i] = i * size;
     }
     int lastSize = count - (n_proc - 1) * size;
 
@@ -82,7 +78,7 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
             // close pipe read end
             close(pipes[i][0]);
             // child process
-            int start = parts[i];
+            int start = partsIndex[i];
             int end = (i == (n_proc - 1) )? count : (start + size);
             int result = numbers[start];
             for (int j = start + 1; j < end; j++)
@@ -128,7 +124,7 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
 
     // free memory
     free(numbers);
-    free(parts);
+    free(partsIndex);
     free(results);
     for (int i = 0; i < n_proc; i++)
     {
