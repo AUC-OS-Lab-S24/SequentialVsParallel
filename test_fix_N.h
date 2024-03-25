@@ -50,6 +50,7 @@ int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_
 
         fprintf(fix_n_res_file, "%ld,%f,%f\n", i, difference_sum_par, difference_sum_seq);
         fflush(fix_n_res_file);
+        free(numbers);
     }
 
     fclose(fix_n_res_file);

@@ -62,6 +62,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
 
         fprintf(fix_nproc_res_file, "%ld,%f,%f\n", i, difference_sum_par, difference_sum_seq);
         fflush(fix_nproc_res_file);
+        free(numbers);
     }
 
     fclose(fix_nproc_res_file);
