@@ -9,37 +9,31 @@
 #define FIXED_N 1000
 
 
-int text_fix_N(char *filepath, int (*operation)(int, int), int nproc){
+int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_filepath){
 
     generate_n(filepath, FIXED_N);
 
-    struct timespec start, end;
+    struct timespec start_seq, end_seq;
+    struct timespec start_par, end_par;
 
-    FILE *fix_n_res_file_seq = fopen("fix_n_res_seq.txt", "w"); 
-
-    clock_gettime(CLOCK_MONOTONIC, &start);
-    sequential_compute(filepath, operation);
-    clock_gettime(CLOCK_MONOTONIC, &end);
-
-    double time_taken = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-    fprintf(fix_n_res_file_seq, "%f\n",time_taken);
-
-    fflush(fix_n_res_file_seq);
-    fclose(fix_n_res_file_seq);
-
-    FILE *fix_n_res_file_par = fopen("fix_n_res_par.txt", "w"); 
+    FILE *fix_n_res_file = fopen(res_filepath, "w"); 
 
     for(int i = 1; i <= nproc; i++){ 
-        clock_gettime(CLOCK_MONOTONIC, &start);
-        parallel_compute(filepath, i, operation);
-        clock_gettime(CLOCK_MONOTONIC, &end);
+        clock_gettime(CLOCK_MONOTONIC, &start_seq);
+        sequential_compute(filepath, operation);
+        clock_gettime(CLOCK_MONOTONIC, &end_seq);
+        double time_taken_seq = (end_seq.tv_sec - start_seq.tv_sec) + (end_seq.tv_nsec - start_seq.tv_nsec) / 1e9;
 
-        time_taken = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-        fprintf(fix_n_res_file_seq, "%f\n" ,time_taken);
+        clock_gettime(CLOCK_MONOTONIC, &start_par);
+        parallel_compute(filepath, i, operation);
+        clock_gettime(CLOCK_MONOTONIC, &end_par);
+
+        double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;
+        fprintf(fix_n_res_file, "%ld,%f,%f\n", i, time_taken_par, time_taken_seq);
+        fflush(fix_n_res_file);
     }
 
-    fflush(fix_n_res_file_par);
-    fclose(fix_n_res_file_par);
+    fclose(fix_n_res_file);
 
 
 

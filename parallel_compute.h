@@ -77,7 +77,6 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
 
 
     for(int i = 0; i < n_proc; i++){
-        
         pid_t pid = fork();
         if(pid == 0){
             // close pipe read end
