@@ -6,15 +6,15 @@
 #include "sequential_compute.h"
 #include "generate_n.h"
 
-// I have 4 cores  - 2
-#define NUMBER_OF_PROCESSES 2
+// I have 16 cores  - 2
+#define NUMBER_OF_PROCESSES 14
 
 int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char* res_file_path)
 {
     char filepath[1024];
 
     // generate all files first
-    for(long i = 1; i <= N; i = i + 1000){
+    for(long i = 500000; i <= N; i = i + 1000){
         sprintf(filepath, "%s%ld", fileDirectory, i);
         generate_n(filepath, i);
     }
@@ -23,7 +23,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
 
     struct timespec start_seq, end_seq;
     struct timespec start_par, end_par;
-    for (long i = 1; i <= N; i= i + 1000){
+    for (long i = 500000; i <= N; i= i + 1000){
         sprintf(filepath, "%s%ld", fileDirectory, i);
 
         //sequential profiling

@@ -11,7 +11,5 @@ int main(){
   test_fix_N("fix_n_res2", multiply, 10, "res_fixed_n.txt");
   test_fix_N("fix_n_res3", multiply, 10, "res_fixed_n.txt");
 
-
-
   return 0;
 }
