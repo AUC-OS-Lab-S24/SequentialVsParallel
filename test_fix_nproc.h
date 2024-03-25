@@ -5,7 +5,6 @@
 #include "parallel_compute.h"
 #include "sequential_compute.h"
 #include "generate_n.h"
-//#include <time.h>
 
 // I have 4 cores 
 #define NUMBER_OF_PROCESSES 4
@@ -20,35 +19,29 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N)
         generate_n(filepath, i);
     }
 
-    FILE *fix_nproc_res_file_seq = fopen("fix_nproc_res_seq.txt", "w"); 
+    FILE *fix_nproc_res_file = fopen("fix_nproc_res.txt", "w"); 
 
-    struct timespec start, end;
+    struct timespec start_seq, end_seq;
+    struct timespec start_par, end_par;
     for (long i = 1; i <= N; i++){
         sprintf(filepath, "%s%ld", fileDirectory, i);
-        clock_gettime(CLOCK_MONOTONIC, &start);
+
+        clock_gettime(CLOCK_MONOTONIC, &start_seq);
         sequential_compute(filepath, operation);
-        clock_gettime(CLOCK_MONOTONIC, &end);
+        clock_gettime(CLOCK_MONOTONIC, &end_seq);
 
-        double time_taken = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-        fprintf(fix_nproc_res_file_seq, "%f,",time_taken);
-        fflush(fix_nproc_res_file_seq);
-    }
-    fclose(fix_nproc_res_file_seq);
+        double time_taken_seq = (end_seq.tv_sec - start_seq.tv_sec) + (end_seq.tv_nsec - start_seq.tv_nsec) / 1e9;
 
-    
-    FILE *fix_nproc_res_file_par = fopen("fix_nproc_res_par.txt", "w"); 
-    for (long i = 1; i <= N; i++){
-        sprintf(filepath, "%s%ld", fileDirectory, i);
-        clock_gettime(CLOCK_MONOTONIC, &start);
+        clock_gettime(CLOCK_MONOTONIC, &start_par);
         parallel_compute(filepath, NUMBER_OF_PROCESSES, operation);
-        clock_gettime(CLOCK_MONOTONIC, &end);
+        clock_gettime(CLOCK_MONOTONIC, &end_par);
 
-        //double time_taken = ((double) par_end_time - par_start_time) / CLOCKS_PER_SEC;
-        double time_taken = (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1e9;
-        fprintf(fix_nproc_res_file_par, "%f,",time_taken);
-        fflush(fix_nproc_res_file_par);
+        double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;
+        fprintf(fix_nproc_res_file, "%ld,%f,%f\n", i, time_taken_par, time_taken_seq);
+        fflush(fix_nproc_res_file);
     }
-    fclose(fix_nproc_res_file_par);
+
+    fclose(fix_nproc_res_file);
 
     return 0;
 }
