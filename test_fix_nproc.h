@@ -14,7 +14,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
     char filepath[1024];
 
     // generate all files first
-    for(long i = 1000000; i <= N; i = i + 10000){
+    for(long i = 16000000; i <= N; i = i + 10000){
         sprintf(filepath, "%s%ld", fileDirectory, i);
         generate_n(filepath, i);
     }
@@ -27,7 +27,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
     double difference_sum_seq = 0;
     double difference_sum_par = 0;
 
-    for (long i = 1000000; i <= N; i= i + 10000){
+    for (long i = 16000000; i <= N; i= i + 10000){
         sprintf(filepath, "%s%ld", fileDirectory, i);
 
         //sequential profiling
