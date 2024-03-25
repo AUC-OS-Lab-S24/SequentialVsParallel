@@ -57,7 +57,7 @@ int main()
         int result = sequential_compute(filepath, operation);
 
         // result from parallel_compute
-        int parallel_result = parallel_compute(filepath, 4, operation);
+        int parallel_result = parallel_compute(filepath, 10, operation);
 
         printf("Result from sequential: %d\n", result);
         printf("Result from parallel: %d\n", parallel_result);

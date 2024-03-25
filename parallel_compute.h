@@ -48,6 +48,12 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
 
 
     int size = count / n_proc;
+
+    // case where count is less than n_proc
+    if(size == 0){
+        size = 1;
+        n_proc = count;
+    }
    
 
     // create n_proc processes
