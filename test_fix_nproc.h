@@ -42,9 +42,17 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
         difference_sum_seq /= 3;
 
         //parallel profiling
+
+        int *numbers = (int *)malloc(i * sizeof(int));
+        fscanf(filepath, "%d", &numbers[0]);
+        for (int j = 1; j < i; j++)
+        {
+            fscanf(filepath, ",%d", &numbers[i]);
+        }
+
         for (int j = 0; j < 3; j++) {
             clock_gettime(CLOCK_MONOTONIC, &start_par);
-            parallel_compute(filepath, NUMBER_OF_PROCESSES, operation);
+            parallel_compute(filepath, i, numbers, NUMBER_OF_PROCESSES, operation);
             clock_gettime(CLOCK_MONOTONIC, &end_par);
 
             double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;

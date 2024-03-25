@@ -31,9 +31,17 @@ int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_
         }
         difference_sum_seq /= 3;
 
+
+        int *numbers = (int *)malloc(i * sizeof(int));
+        fscanf(filepath, "%d", &numbers[0]);
+        for (int j = 1; j < i; j++)
+        {
+            fscanf(filepath, ",%d", &numbers[i]);
+        }
+
         for(int j = 0; j < 3; j++) {
             clock_gettime(CLOCK_MONOTONIC, &start_par);
-            parallel_compute(filepath, i, operation);
+            parallel_compute(filepath, FIXED_N, numbers, i, operation);
             clock_gettime(CLOCK_MONOTONIC, &end_par);
             double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;
             difference_sum_par += difference_sum_par;
