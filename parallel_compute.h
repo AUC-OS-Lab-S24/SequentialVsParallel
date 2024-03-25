@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
+int parallel_compute(char *path, int n,  int n_proc, int (*f)(int, int)){
     // open file
     FILE *file = fopen(path, "r");
     if(!file){
@@ -21,7 +21,7 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     }
 
     // read numbers until file is empty
-    int temp, count = 1;
+    /*int temp, count = 1;
     fscanf(file, "%d", &temp); 
 
     while (fscanf(file, ",%d", &temp) == 1)
@@ -29,12 +29,12 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
         count++;
     }
     // move file pointer to start
-    fseek(file, 0, SEEK_SET);
+    fseek(file, 0, SEEK_SET);*/
 
     // read numbers into array
-    int *numbers = (int *)malloc(count * sizeof(int));
+    int *numbers = (int *)malloc(n * sizeof(int));
     fscanf(file, "%d", &numbers[0]);
-    for (int i = 1; i < count; i++)
+    for (int i = 1; i < n; i++)
     {
         fscanf(file, ",%d", &numbers[i]);
         //printf("num[%d] = %d\n", i, numbers[i]);
@@ -47,12 +47,12 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     // in this case final process will have the remaining numbers
 
 
-    int size = count / n_proc;
+    int size = n / n_proc;
 
     // case where count is less than n_proc
     if(size == 0){
         size = 1;
-        n_proc = count;
+        n_proc = n;
     }
    
 
@@ -84,7 +84,7 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
             // child process
             int start = i * size;
             // last index for last process is count - 1
-            int end = (i == (n_proc - 1) )? count : (start + size);
+            int end = (i == (n_proc - 1) )? n : (start + size);
             int result = numbers[start];
             for (int j = start + 1; j < end; j++)
             {
