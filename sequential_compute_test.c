@@ -13,7 +13,7 @@ int multiply(int a, int b)
     return a * b;
 }
 
-int main()
+int sequential_compute_test()
 {
     
     // Allow choice of add or multiply
