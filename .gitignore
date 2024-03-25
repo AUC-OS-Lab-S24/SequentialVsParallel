@@ -1,3 +1,5 @@
 sequential_compute
 sequential_compute_test
 .vscode
+/fixed_nproc/
+main

@@ -1,9 +1,8 @@
 
-#include "generate_n.h"
+#include "test_fix_nproc.h"
 
 int main(){
-  generate_n("numbers.txt", 100);
-
+  test_fix_nproc("fixed_nproc/", multiply, 1000);
 
   return 0;
 }

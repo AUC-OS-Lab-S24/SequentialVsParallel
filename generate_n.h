@@ -4,11 +4,23 @@
 #include <stdio.h>
 #include <time.h>
 
-unsigned long RAND_A = 16807;
-unsigned long RAND_MODULUS = 2147483647;
+#define RAND_A 16807
+#define RAND_MODULUS 2147483647
+
+// operation
+int add(int a, int b)
+{
+    return a + b;
+}
+
+int multiply(int a, int b)
+{
+    return a * b;
+}
+
 
 // rudimentary random number generator
-long rand(seed){
+long rud_rand(long seed){
     seed = (RAND_A * seed) % RAND_MODULUS;
     return seed;
 }
@@ -23,22 +35,20 @@ int generate_n(char* filepath, long n){
         return 1;
     }
 
-    time_t current_time = time(NULL);
+    clock_t current_time = time(NULL);
 
-    stdout = file;
     long random_number = (long)current_time; //as seed
     for(long i = 0; i < n; i++){
-        random_number = rand(random_number);
+        random_number = rud_rand(random_number);
         if(i == n - 1) {
-            printf("%d",random_number);
+            fprintf(file, "%ld", random_number);
             break;
         }
 
-        printf("%d,",random_number); 
+        fprintf(file, "%ld,", random_number); 
     }
 
     fclose(file);
-    stdout = 0;
     return 0;
 }
 

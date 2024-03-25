@@ -3,15 +3,7 @@
 #include <string.h>
 #include "sequential_compute.h"
 #include "parallel_compute.h"
-int add(int a, int b)
-{
-    return a + b;
-}
-
-int multiply(int a, int b)
-{
-    return a * b;
-}
+#include "generate_n.h"
 
 int sequential_compute_test()
 {
