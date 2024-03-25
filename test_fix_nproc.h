@@ -14,7 +14,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
     char filepath[1024];
 
     // generate all files first
-    for(long i = 1000000; i <= N; i = i + 10000){
+    for(long i = 16000000; i <= N; i = i + 10000){
         sprintf(filepath, "%s%ld", fileDirectory, i);
         generate_n(filepath, i);
     }
@@ -27,7 +27,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
     double difference_sum_seq = 0;
     double difference_sum_par = 0;
 
-    for (long i = 1000000; i <= N; i= i + 10000){
+    for (long i = 16000000; i <= N; i= i + 10000){
         sprintf(filepath, "%s%ld", fileDirectory, i);
 
         //sequential profiling
@@ -44,7 +44,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
         //parallel profiling
         for (int j = 0; j < 3; j++) {
             clock_gettime(CLOCK_MONOTONIC, &start_par);
-            parallel_compute(filepath, NUMBER_OF_PROCESSES, operation);
+            parallel_compute(filepath,i, NUMBER_OF_PROCESSES, operation);
             clock_gettime(CLOCK_MONOTONIC, &end_par);
 
             double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;
