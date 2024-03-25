@@ -21,7 +21,9 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     }
 
     // read numbers until file is empty
-    int temp, count = 0;
+    int temp, count = 1;
+    fscanf(file, "%d", &temp); 
+
     while (fscanf(file, ",%d", &temp) == 1)
     { 
         count++;
@@ -30,9 +32,11 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
 
     // read numbers into array
     int *numbers = (int *)malloc(count * sizeof(int));
-    for (int i = 0; i < count; i++)
+    fscanf(file, "%d", &numbers[0]);
+    for (int i = 1; i < count; i++)
     {
         fscanf(file, ",%d", &numbers[i]);
+        //printf("num[%d] = %d\n", i, numbers[i]);
     }
     fclose(file);
 
