@@ -28,6 +28,7 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     { 
         count++;
     }
+    // move file pointer to start
     fseek(file, 0, SEEK_SET);
 
     // read numbers into array
@@ -41,19 +42,13 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
     fclose(file);
 
     // split numbers into n_proc parts
-    // assign a starting index to each process
-    int *partsIndex = (int *)malloc(n_proc * sizeof(int));
+
     // size will be equal to count/n_proc, unless count is not divisible by n_proc
+    // in this case final process will have the remaining numbers
 
 
     int size = count / n_proc;
    
-    // assign part index and size
-    for (int i = 0; i < n_proc; i++)
-    {
-        partsIndex[i] = i * size;
-    }
-    int lastSize = count - (n_proc - 1) * size;
 
     // create n_proc processes
     // each process will compute the function on its part of the numbers
@@ -82,16 +77,15 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
             // close pipe read end
             close(pipes[i][0]);
             // child process
-            int start = partsIndex[i];
+            int start = i * size;
+            // last index for last process is count - 1
             int end = (i == (n_proc - 1) )? count : (start + size);
             int result = numbers[start];
             for (int j = start + 1; j < end; j++)
             {
                 result = f(result, numbers[j]);
             }
-            // Debug lines
-            // printf("Process %d: %d\n", i, result);
-            // DEBUG HERE 
+            
             // pass value to parent using pipe
             write(pipes[i][1], &result, sizeof(int));
             // close pipe write end
@@ -102,7 +96,6 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
         }else{
             // close pipe write end
             close(pipes[i][1]);
-            
         }
     
     }
@@ -131,7 +124,6 @@ int parallel_compute(char *path, int n_proc, int (*f)(int, int)){
 
     // free memory
     free(numbers);
-    free(partsIndex);
     free(results);
     for (int i = 0; i < n_proc; i++)
     {
