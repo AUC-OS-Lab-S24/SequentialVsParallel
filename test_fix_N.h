@@ -6,7 +6,7 @@
 #include "sequential_compute.h"
 #include "generate_n.h"
 
-#define FIXED_N 50000000
+#define FIXED_N 5000
 
 
 int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_filepath){
@@ -44,7 +44,7 @@ int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_
             parallel_compute(filepath, FIXED_N, numbers, i, operation);
             clock_gettime(CLOCK_MONOTONIC, &end_par);
             double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;
-            difference_sum_par += difference_sum_par;
+            difference_sum_par += time_taken_par;
         }
         difference_sum_par /= 3;
 
