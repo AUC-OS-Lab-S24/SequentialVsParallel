@@ -6,7 +6,7 @@
 #include "sequential_compute.h"
 #include "generate_n.h"
 
-#define FIXED_N 5000
+#define FIXED_N 3700000
 
 
 int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_filepath){
