@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include <sys/wait.h>
 
-int parallel_compute(char *path, int n, int *numbers,  int n_proc, int (*f)(int, int)){
+int parallel_compute(char *path, int n, int n_proc, int (*f)(int, int)){
     // open file
     FILE *file = fopen(path, "r");
     if(!file){
@@ -32,6 +32,14 @@ int parallel_compute(char *path, int n, int *numbers,  int n_proc, int (*f)(int,
     fseek(file, 0, SEEK_SET);*/
 
     // read numbers into array
+    int *numbers = (int *)malloc(n * sizeof(int));
+    fscanf(file, "%d", &numbers[0]);
+    for (int i = 1; i < n; i++)
+    {
+        fscanf(file, ",%d", &numbers[i]);
+        //printf("num[%d] = %d\n", i, numbers[i]);
+    }
+    fclose(file);
 
     // split numbers into n_proc parts
 
