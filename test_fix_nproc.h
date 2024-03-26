@@ -42,12 +42,12 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
         difference_sum_seq /= 3;
 
         //parallel profiling
-
+        FILE *file = fopen(filepath, "r");
         int *numbers = (int *)malloc(i * sizeof(int));
-        fscanf(filepath, "%d", &numbers[0]);
+        fscanf(file, "%d", &numbers[0]);
         for (int j = 1; j < i; j++)
         {
-            fscanf(filepath, ",%d", &numbers[i]);
+            fscanf(file, ",%d", &numbers[j]);
         }
 
         for (int j = 0; j < 3; j++) {
@@ -63,6 +63,7 @@ int test_fix_nproc(char *fileDirectory, int (*operation)(int, int), long N, char
         fprintf(fix_nproc_res_file, "%ld,%f,%f\n", i, difference_sum_par, difference_sum_seq);
         fflush(fix_nproc_res_file);
         free(numbers);
+        fclose(file);
     }
 
     fclose(fix_nproc_res_file);

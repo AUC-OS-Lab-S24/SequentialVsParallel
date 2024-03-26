@@ -6,7 +6,7 @@
 #include "sequential_compute.h"
 #include "generate_n.h"
 
-#define FIXED_N 500000
+#define FIXED_N 50000000
 
 
 int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_filepath){
@@ -31,12 +31,12 @@ int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_
         }
         difference_sum_seq /= 3;
 
-
+        FILE *file = fopen(filepath, "r");
         int *numbers = (int *)malloc(i * sizeof(int));
-        fscanf(filepath, "%d", &numbers[0]);
+        fscanf(file, "%d", &numbers[0]);
         for (int j = 1; j < i; j++)
         {
-            fscanf(filepath, ",%d", &numbers[i]);
+            fscanf(file, ",%d", &numbers[j]);
         }
 
         for(int j = 0; j < 3; j++) {
