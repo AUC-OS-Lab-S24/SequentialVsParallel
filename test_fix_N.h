@@ -6,7 +6,7 @@
 #include "sequential_compute.h"
 #include "generate_n.h"
 
-#define FIXED_N 50000000
+#define FIXED_N 25000
 
 
 int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_filepath){
@@ -31,26 +31,17 @@ int test_fix_N(char *filepath, int (*operation)(int, int), int nproc, char* res_
         }
         difference_sum_seq /= 3;
 
-        FILE *file = fopen(filepath, "r");
-        int *numbers = (int *)malloc(i * sizeof(int));
-        fscanf(file, "%d", &numbers[0]);
-        for (int j = 1; j < i; j++)
-        {
-            fscanf(file, ",%d", &numbers[j]);
-        }
-
         for(int j = 0; j < 3; j++) {
             clock_gettime(CLOCK_MONOTONIC, &start_par);
-            parallel_compute(filepath, FIXED_N, numbers, i, operation);
+            parallel_compute(filepath, FIXED_N, i, operation);
             clock_gettime(CLOCK_MONOTONIC, &end_par);
             double time_taken_par = (end_par.tv_sec - start_par.tv_sec) + (end_par.tv_nsec - start_par.tv_nsec) / 1e9;
-            difference_sum_par += difference_sum_par;
+            difference_sum_par += time_taken_par;
         }
         difference_sum_par /= 3;
 
         fprintf(fix_n_res_file, "%ld,%f,%f\n", i, difference_sum_par, difference_sum_seq);
         fflush(fix_n_res_file);
-        free(numbers);
     }
 
     fclose(fix_n_res_file);
